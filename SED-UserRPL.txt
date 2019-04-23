@@ -1,0 +1,33 @@
+\<< 'L' PURGE
+'I' PURGE
+'VF' PURGE
+"Insira uma matriz com os valores de t(s) na coluna 1 e de z(m) na coluna 2" MSGBOX
+"Matriz com os valores de t e z" {"M="} {1 0} {} {} INFORM 'VF' STO
+ IF 'VF==0'
+ THEN
+  HALT
+ END
+'L' STO
+'L(1)' EVAL 'M' STO
+"Valores de Cwvf e Cwvu" {{"Cwvf=" "kg/m3"} {"Cwvu=" "kg/m3"}} {1 0} {} {} INFORM 'VF' STO
+ IF 'VF==0'
+ THEN
+  HALT
+ END
+'L' STO
+'L(1)' EVAL 'CWVF' STO
+'L(2)' EVAL 'CWVU' STO
+M \->ROW 1 - 'N' STO CLEAR 
+{ } 'L' STO 
+[ 't' 'z' 'v' 'zi' 'Cwvl' 'Q' ] 
+1. N
+ FOR I 
+  '(M(I,1.)+M(I+1.,1.))/2.' EVAL 'T' STO 
+  '(M(I,2.)+M(I+1.,2.))/2.' EVAL 'Z' STO 
+  '-((M(I+1.,2.)-M(I,2.))/(M(I+1.,1.)-M(I,1.)))' EVAL 'V' STO 
+  'Z+V*T' EVAL 'ZI' STO 
+  'CWVF*M(1.,2.)/ZI' EVAL 'CWVL' STO 
+  '(1./CWVL-1./CWVU)/V' EVAL 'Y' STO 
+  L T + Z + V + ZI + CWVL + Y + AXL AUGMENT
+ NEXT
+\>>
